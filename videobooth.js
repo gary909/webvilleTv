@@ -17,3 +17,25 @@ window.onload = function() {
     pushUnpushButtons("video1", []);
     pushUnpushButtons("normal", []);
 }
+
+function handleControl(e) {
+    var id = e.target.getAttribute("id");
+
+    if (id == "play") {
+        pushUnpushButtons("play", ["pause"]);
+    } else if (id == "pause") {
+        pushUnpushButtons("pause", ["play"]);
+    } else if (id == "loop") {
+        if (isButtonPushed("loop")) {
+            pushUnpushButtons("", ["mute"]);
+        } else {
+            pushUnpushButtons("loop", []);
+        }
+    } else if (id == "mute") {
+        if (isButtonPushed("mute")) {
+            pushUnpushButtons("", ["mute"]);
+        } else {
+            pushUnpushButtons("mute", []);
+        }
+    }
+}
