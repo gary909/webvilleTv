@@ -1,4 +1,11 @@
+var videos = {video1: "video/demovideo1", video2: "video/demovideo2"};
+
 window.onload = function() {
+
+    var video = document.getElementById("video");
+    video.src = videos.video1 + getFormatExtension();
+    video.load();
+
     var controlLinks = document.querySelectorAll("a.control");
     for (var i = 0; i < controlLinks.length; i++) {
         controlLinks[i].onclick = handleControl;
@@ -27,7 +34,7 @@ function handleControl(e) {
         pushUnpushButtons("pause", ["play"]);
     } else if (id == "loop") {
         if (isButtonPushed("loop")) {
-            pushUnpushButtons("", ["mute"]);
+            pushUnpushButtons("", ["loop"]);
         } else {
             pushUnpushButtons("loop", []);
         }
@@ -35,7 +42,7 @@ function handleControl(e) {
         if (isButtonPushed("mute")) {
             pushUnpushButtons("", ["mute"]);
         } else {
-            pushUnpushButtons("mute", []);
+            pushUnpushButtons("mute", [""]);
         }
     }
 }
