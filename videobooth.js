@@ -21,29 +21,41 @@ window.onload = function() {
         videoLinks[i].onclick = setVideo;
     }
 
+    video.addEventListener("ended", endedHandler, false);
+
     pushUnpushButtons("video1", []);
     pushUnpushButtons("normal", []);
 }
 
 function handleControl(e) {
     var id = e.target.getAttribute("id");
+    var video = document.getElementById("video");
 
     if (id == "play") {
         pushUnpushButtons("play", ["pause"]);
+        if (video.ended) {
+            video.load();
+        }
+        video.play();
     } else if (id == "pause") {
         pushUnpushButtons("pause", ["play"]);
+        video.pause();
+
     } else if (id == "loop") {
         if (isButtonPushed("loop")) {
             pushUnpushButtons("", ["loop"]);
         } else {
             pushUnpushButtons("loop", []);
         }
+        video.loop = !video.loop;
+
     } else if (id == "mute") {
         if (isButtonPushed("mute")) {
             pushUnpushButtons("", ["mute"]);
         } else {
             pushUnpushButtons("mute", [""]);
         }
+        video.muted = !video.muted;
     }
 }
 
@@ -63,11 +75,31 @@ function setEffect(e) {
 
 function setVideo(e) {
     var id = e.target.getAttribute("id");
+    var video = document.getElementById("video");
+
     if (id == "video1") {
         pushUnpushButtons("video1", ["video2"]);
     } else if (id == "video2") {
         pushUnpushButtons("video2", ["video1"]);
     }
+    video.src = videos[id] + getFormatExtension();
+    video.load();
+    video.play();
+
+    pushUnpushButtons("play", ["pause"]);
+}
+
+function getFormatExtension() {
+	var video = document.getElementById("video");
+	if (video.canPlayType("video/mp4") != "") {
+		return ".mp4";
+	} 
+	else if (video.canPlayType("video/ogg") != "") {
+		return ".ogv";
+	}
+	else if (video.canPlayType("video/webm") != "") {
+		return ".webm";
+	} 
 }
 
 function pushUnpushButtons(idToPush, idArrayToUnpush) {
@@ -98,5 +130,9 @@ function isButtonPushed(id) {
 	var anchor = document.getElementById(id);
 	var theClass = anchor.getAttribute("class");
 	return (theClass.indexOf("selected") >= 0);
+}
+
+function endedHandler(e) {
+	pushUnpushButtons("", ["play"]);
 }
 
