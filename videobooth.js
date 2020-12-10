@@ -62,3 +62,34 @@ function setVideo(e) {
         pushUnpushButtons("video2", ["video1"]);
     }
 }
+
+function pushUnpushButtons(idToPush, idArrayToUnpush) {
+    if (idToPush != "") {
+        var anchor = document.getElementById(idToPush);
+        var theClass = anchor.getAttribute("class");
+        if (!theClass.indexOf("selected") >= 0) {
+            theClass = theClass + " selected";
+            anchor.setAttribute("class", theClass);
+            var newImage = "url(images/" + idToPush + "pressed.png)";
+            anchor.style.backgroundImage = newImage;
+        }
+    }
+
+	for (var i = 0; i < idArrayToUnpush.length; i++) {
+		anchor = document.getElementById(idArrayToUnpush[i]);
+		theClass = anchor.getAttribute("class");
+		if (theClass.indexOf("selected") >= 0) {
+			theClass = theClass.replace("selected", "");
+			anchor.setAttribute("class", theClass);
+			anchor.style.backgroundImage = "";
+		}
+	}
+
+}
+
+function isButtonPushed(id) {
+	var anchor = document.getElementById(id);
+	var theClass = anchor.getAttribute("class");
+	return (theClass.indexOf("selected") >= 0);
+}
+
